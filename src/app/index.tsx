@@ -6,7 +6,7 @@ import { useAuth } from '../providers/AuthProvider';
 import { supabase } from '../lib/supabase';
 
 const index = () => {
-  const {session, loading} = useAuth()
+  const {session, loading, isAdmin} = useAuth()
   if(loading) {
     return <ActivityIndicator />;
   }
@@ -15,7 +15,9 @@ const index = () => {
     return <Redirect href={'/sign-in'} />;
   }
   
-  console.log(session)
+if(!isAdmin){
+  return <Redirect href={"/(user)"} />
+}
 
 
 
@@ -27,9 +29,9 @@ const index = () => {
       <Link href={'/(admin)'} asChild>
         <Button text="Admin" />
       </Link>
-      <Link href={'/sign-in'} asChild>
+      {/* <Link href={'/sign-in'} asChild>
         <Button text="Log In" />
-      </Link>
+      </Link> */}
       <Button text='Log Out' onPress = {() => supabase.auth.signOut()}/>
     </View>
   );
