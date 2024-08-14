@@ -10,22 +10,10 @@ import { supabase } from "@/src/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
 import { Product } from "@/src/types";
 import { useProductList } from "@/src/api/products";
-
+import products from "@/assets/data/products";
 export default function MenuScreen() {
-  const {
-    data: products,
-    error,
-    isLoading,
-  } = useProductList()
-
-  if (error) {
-    return <ActivityIndicator />;
-  }
-
-  if (isLoading) {
-    return <Text>failed to fetch Products</Text>;
-  }
-
+  
+  
   // useEffect(()=>{
   //   const fetchProduct = async ()=>{
   //     const {data, error} = await supabase.from("products").select("*")
