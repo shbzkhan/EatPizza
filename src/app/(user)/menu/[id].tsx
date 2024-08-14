@@ -1,32 +1,48 @@
-import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import { StyleSheet, Text, View, Image, Pressable, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
 import { useLocalSearchParams, Stack, useRouter } from "expo-router";
-import products from "@/assets/data/products";
 import Button from "@/src/components/button";
 import { useCart } from "@/src/providers/CartProvider";
 import { PizzaSize } from "@/src/types";
+import { useProduct } from "@/src/api/products";
+import { defaultPizaaImage } from "@/src/components/ProductListItem";
 
 
 const sizes: PizzaSize[] = ["S", "M", "L", "XL"];
 const ProductDetailScreen = () => {
-  const { id } = useLocalSearchParams(); 
+  const { id:idString } = useLocalSearchParams(); 
+  const id = parseFloat(typeof idString === "string"? idString : idString[0] )
+
+const {data:product, error, isLoading} = useProduct(id)
+
   const {addItem} = useCart();
   const router = useRouter()
 
   const [selectSize, setSelectSize] = useState<PizzaSize>("M");
-  const product = products.find((p) => p.id.toString() === id);
+
 
   const addToCart = () => {
-    if(!product){return;}
+    if(!product){
+      return;
+    }
     addItem(product, selectSize)
     router.push('/cart')
   };
+
+  if (error) {
+    return <ActivityIndicator />;
+  }
+
+  if (isLoading) {
+    return <Text>failed to fetch Products</Text>;
+  }
+
   
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: product?.name }} />
       <Image
-        source={{ uri: product?.image }}
+        source={{ uri: product?.image || defaultPizaaImage }}
         style={styles.image}
         resizeMode="contain"
       />
