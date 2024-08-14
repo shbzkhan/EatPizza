@@ -2,7 +2,7 @@ import {
   StyleSheet,
   Text,
   FlatList,
-  ActivityIndicator,
+
 } from "react-native";
 import Colors from "../../../constants/Colors";
 import ProductListItem from "../../../components/ProductListItem";
