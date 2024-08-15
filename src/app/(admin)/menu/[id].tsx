@@ -6,6 +6,7 @@ import { PizzaSize } from "@/src/types";
 import { FontAwesome } from "@expo/vector-icons";
 import Colors from "@/src/constants/Colors";
 import { useProduct } from "@/src/api/products";
+import { defaultPizaaImage } from "@/src/components/ProductListItem";
 
 
 const sizes: PizzaSize[] = ["S", "M", "L", "XL"];
@@ -64,14 +65,13 @@ const {data:product, error, isLoading} = useProduct(id)
 
       <Stack.Screen options={{ title: product?.name }} />
       <Image
-        source={{ uri: product?.image }}
+        source={{ uri: product?.image || defaultPizaaImage }}
         style={styles.image}
         resizeMode="contain"
       />
 
       <Text style={styles.title}>{product?.name}</Text>
       <Text style={styles.price}>{"\u20B9" + product?.price}</Text>
-      {/* <Button onPress={addToCart} text="Add to Cart" /> */}
     </View>
   );
 };

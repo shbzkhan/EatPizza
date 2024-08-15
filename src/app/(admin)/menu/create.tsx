@@ -1,10 +1,11 @@
 import { StyleSheet, Text, TextInput, View, Image, Alert } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Colors from "../../../constants/Colors";
 import Button from "../../../components/button";
 import { defaultPizaaImage } from "../../../components/ProductListItem";
 import * as ImagePicker from "expo-image-picker";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { useDeleteProduct, useInsertProduct, useProduct, useUpdateProduct } from "@/src/api/products";
 
 const CreatePorductScreen = () => {
   const [name, setName] = useState("");
@@ -12,8 +13,26 @@ const CreatePorductScreen = () => {
   const [error, setError] = useState("");
   const [image, setImage] = useState<string | null>(null);
 
-  const { id } = useLocalSearchParams();
+  const { id: idString } = useLocalSearchParams();
+  const id = parseFloat(typeof idString ===   "string" ? idString : idString?.[0])
   const isUpdating = !!id;
+  const router = useRouter()
+
+  const {mutate: insetProduct} = useInsertProduct()
+  const {mutate: updateProduct} = useUpdateProduct()
+  const {mutate: deleteProduct} = useDeleteProduct()
+  const {data: updatingProduct} = useProduct(id)
+
+  useEffect(()=>{
+    if(updatingProduct){
+      setName(updatingProduct.name),
+      setImage(updatingProduct.image),
+      setPrice(updatingProduct.price.toString())
+
+    }
+
+  },[updatingProduct])
+
 
   const onSubmit = () => {
     if (isUpdating) {
@@ -33,17 +52,29 @@ const CreatePorductScreen = () => {
       return;
     }
     // console.warn(`Name: ${name}, Price: ${price}`)
+    insetProduct({name, image, price: parseFloat(price)},{
+      onSuccess: ()=>{
+        resetFiled();
+        router.back()
+      }
+    })
 
-    resetFiled();
+  
   };
 
   const onUpdateProduct = () => {
     if (!validationInput()) {
       return;
     }
-    console.warn(`Name: ${name}, Price: ${price}`);
-
-    resetFiled();
+    updateProduct({id, name, image, price: parseFloat(price)},{
+     
+      onSuccess: ()=>{
+        resetFiled(),
+        router.back()
+      }
+      
+    })
+    // console.warn(name)
   };
 
   const validationInput = () => {
@@ -80,7 +111,12 @@ const CreatePorductScreen = () => {
   };
 
   const onDelete = () => {
-    console.warn("Delete !!!");
+    deleteProduct(id,{
+      onSuccess: ()=>{
+        resetFiled();
+        router.replace("/(admin)")
+      }
+    })
   };
 
   const onConfirmDelete = () => {
