@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     alignSelf: 'center',
     marginRight: 10,
+    borderRadius:75
   },
   title: {
     fontWeight: '500',
