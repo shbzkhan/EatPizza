@@ -1,14 +1,14 @@
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
 import Colors from '../constants/Colors';
 import products from '@/assets/data/products';
-import { Product } from '@/src/types';
+import { Product,Tables } from '@/src/types';
 import { Link, useSegments } from 'expo-router';
 
 
 export const defaultPizaaImage =
 "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png"
 type ProductListItemProps = {
-    product: Product
+    product: Tables<"products">
 }
 
 
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   image:{
     width: "100%",
     aspectRatio: 1,
+    borderRadius: 100
   },
   title: {
     fontSize: 18,

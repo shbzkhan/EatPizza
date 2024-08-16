@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     width: "100%",
     aspectRatio: 1,
     alignSelf: "center",
+    borderRadius: 500
   },
   subtitle: {
     marginVertical: 10,
