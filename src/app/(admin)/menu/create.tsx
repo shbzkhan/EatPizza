@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View, Image, Alert } from "react-native";
+import { StyleSheet, Text, TextInput, View, Image, Alert, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import Colors from "../../../constants/Colors";
 import Button from "../../../components/button";
@@ -6,6 +6,7 @@ import { defaultPizaaImage } from "../../../components/ProductListItem";
 import * as ImagePicker from "expo-image-picker";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useDeleteProduct, useInsertProduct, useProduct, useUpdateProduct } from "@/src/api/products";
+import Loader from "@/src/components/Loader";
 
 const CreatePorductScreen = () => {
   const [name, setName] = useState("");
@@ -22,6 +23,7 @@ const CreatePorductScreen = () => {
   const {mutate: updateProduct} = useUpdateProduct()
   const {mutate: deleteProduct} = useDeleteProduct()
   const {data: updatingProduct} = useProduct(id)
+  const [loading, setloading] = useState(false)
 
   useEffect(()=>{
     if(updatingProduct){
@@ -35,11 +37,13 @@ const CreatePorductScreen = () => {
 
 
   const onSubmit = () => {
+    setloading(true)
     if (isUpdating) {
       onUpdateProduct();
     } else {
       onCreateProduct();
     }
+
   };
 
   const resetFiled = () => {
@@ -56,9 +60,9 @@ const CreatePorductScreen = () => {
       onSuccess: ()=>{
         resetFiled();
         router.back()
+        setloading(false)
       }
     })
-
   
   };
 
@@ -70,7 +74,8 @@ const CreatePorductScreen = () => {
      
       onSuccess: ()=>{
         resetFiled(),
-        router.back()
+        router.back(),
+      setloading(false)
       }
       
     })
@@ -132,6 +137,8 @@ const CreatePorductScreen = () => {
     ]);
   };
 
+  
+
   return (
     <View style={styles.container}>
       <Stack.Screen
@@ -165,7 +172,7 @@ const CreatePorductScreen = () => {
       <Text style={{ color: "red" }}>{error}</Text>
       <Button
         onPress={onSubmit}
-        text={isUpdating ? "Update Product" : "Create Product"}
+        text={loading?<ActivityIndicator color={"white"}/>:(isUpdating ? "Update Product" : "Create Product")}
       />
 
       {isUpdating && (

@@ -6,6 +6,7 @@ import { useCart } from "@/src/providers/CartProvider";
 import { PizzaSize } from "@/src/types";
 import { useProduct } from "@/src/api/products";
 import { defaultPizaaImage } from "@/src/components/ProductListItem";
+import Loader from "@/src/components/Loader";
 
 
 const sizes: PizzaSize[] = ["S", "M", "L", "XL"];
@@ -29,13 +30,14 @@ const {data:product, error, isLoading} = useProduct(id)
     router.push('/cart')
   };
 
-  if (error) {
-    return <ActivityIndicator />;
+  if (isLoading) {
+    return <Loader/>
   }
 
-  if (isLoading) {
+  if (error) {
     return <Text>failed to fetch Products</Text>;
   }
+
 
   
   return (

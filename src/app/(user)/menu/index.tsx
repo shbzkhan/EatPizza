@@ -8,6 +8,7 @@ import {
 import Colors from "../../../constants/Colors";
 import ProductListItem from "../../../components/ProductListItem";
 import { useProductList } from "@/src/api/products";
+import Loader from "@/src/components/Loader";
 
 export default function MenuScreen() {
   const {
@@ -16,11 +17,11 @@ export default function MenuScreen() {
     isLoading,
   } = useProductList()
 
-  if (error) {
-    return <ActivityIndicator />;
+  if (isLoading) {
+    return <Loader/>
   }
 
-  if (isLoading) {
+  if (error) {
     return <Text>failed to fetch Products</Text>;
   }
 

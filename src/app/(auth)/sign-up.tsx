@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
+import { View, Text, TextInput, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
 import Button from "../../components/button";
 import Colors from "../../constants/Colors";
@@ -28,6 +28,7 @@ const SignUpScreen = () => {
         onChangeText={setEmail}
         placeholder="jon@gmail.com"
         style={styles.input}
+        keyboardType="email-address"
       />
 
       <Text style={styles.label}>Password</Text>
@@ -42,7 +43,7 @@ const SignUpScreen = () => {
       <Button
         onPress={signupWithEmail}
         disabled={loading}
-        text={loading ? "Creating account..." : "Create account"}
+        text ={loading ? <ActivityIndicator color={"white"}/>  : "Create account"}
       />
       <Link href="/sign-in" style={styles.textButton}>
         Sign in

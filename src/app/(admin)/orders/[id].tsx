@@ -6,6 +6,7 @@ import { View, Text, FlatList, Pressable, ActivityIndicator } from "react-native
 import Colors from "@/src/constants/Colors"
 import { OrderStatusList } from "@/src/types"
 import { useOrderDetail } from "@/src/api/orders"
+import Loader from "@/src/components/Loader"
 
 
 const OrderDetailScreen = ()=>{
@@ -15,7 +16,7 @@ const OrderDetailScreen = ()=>{
     const {data: order, isLoading, error} = useOrderDetail(id)
 
     if(isLoading){
-        return <ActivityIndicator/>
+        return <Loader/>
       }
     if(error){
       return <Text>Failed to fetch</Text>

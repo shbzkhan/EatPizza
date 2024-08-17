@@ -2,13 +2,14 @@ import { StyleSheet, Text, FlatList, ActivityIndicator} from 'react-native'
 import React from 'react'
 import OrderListItem from '@/src/components/OrderLIstItem'
 import { useAdminOrderList } from '@/src/api/orders'
+import Loader from '@/src/components/Loader'
 
 
 const OrderScreen = () => {
   const {data: orders, isLoading, error} = useAdminOrderList({archived: false})
 
   if(isLoading){
-    return <ActivityIndicator/>
+    return <Loader/>
   }
 if(error){
   return <Text>Failed to fetch</Text>

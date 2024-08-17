@@ -1,9 +1,11 @@
-import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
+import { View, Text, TextInput, StyleSheet, Alert, ActivityIndicator } from "react-native";
 import React, { useState } from "react";
 import Button from "../../components/button";
 import Colors from "../../constants/Colors";
 import { Link, Stack } from "expo-router";
 import { supabase } from "@/src/lib/supabase";
+import { isLoaded } from "expo-font";
+import Loader from "@/src/components/Loader";
 const SignInScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,7 +21,6 @@ const SignInScreen = () => {
     if (error) Alert.alert(error.message);
     setloading(false);
   };
-
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: "Sign in" }} />
@@ -30,6 +31,7 @@ const SignInScreen = () => {
         onChangeText={setEmail}
         placeholder="jon@gmail.com"
         style={styles.input}
+        keyboardType="email-address"
       />
 
       <Text style={styles.label}>Password</Text>
@@ -44,7 +46,7 @@ const SignInScreen = () => {
       <Button
         onPress={signinWithEmail}
         disabled={loading}
-        text={loading ? "signin In..." : "Sign in"}
+        text={loading ? <ActivityIndicator color={"white"}/> : "Sign in"}
       />
       <Link href="/sign-up" style={styles.textButton}>
         Create an account

@@ -3,6 +3,7 @@ import OrderItemListItem from "@/src/components/OrderItemListItem"
 import { Stack, useLocalSearchParams } from "expo-router"
 import { View, Text, FlatList, ActivityIndicator } from "react-native"
 import { useOrderDetail } from "@/src/api/orders"
+import Loader from "@/src/components/Loader"
 
 
 const OrderDetailScreen = ()=>{
@@ -12,7 +13,7 @@ const OrderDetailScreen = ()=>{
     const {data: order, isLoading, error} = useOrderDetail(id)
 
     if(isLoading){
-        return <ActivityIndicator/>
+        return <Loader/>
       }
     if(error){
       return <Text>Failed to fetch</Text>
