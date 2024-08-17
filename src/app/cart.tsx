@@ -7,7 +7,7 @@ import Button from "../components/button";
 import { Stack } from "expo-router";
 
 const CartScreen = () => {
-  const { items, total } = useCart();
+  const { items, total, checkout } = useCart();
   return (
     <View style={{padding: 10}}>
        <Stack.Screen options={{ title: "Cart" }} />
@@ -17,7 +17,7 @@ const CartScreen = () => {
         contentContainerStyle={{ gap: 10}}
       />
       <Text style={{marginTop: 20, fontSize: 20, fontWeight: "500"}}>Total: {"\u20B9" + total}</Text>
-      <Button text="Checkout"/>
+      <Button onPress={checkout} text="Checkout"/>
     </View>
   );
 };
