@@ -5,7 +5,7 @@ import { Stack, useLocalSearchParams } from "expo-router"
 import { View, Text, FlatList, Pressable, ActivityIndicator } from "react-native"
 import Colors from "@/src/constants/Colors"
 import { OrderStatusList } from "@/src/types"
-import { useOrderDetail } from "@/src/api/orders"
+import { useOrderDetail, useUpdateOrder } from "@/src/api/orders"
 import Loader from "@/src/components/Loader"
 
 
@@ -15,20 +15,26 @@ const OrderDetailScreen = ()=>{
 
     const {data: order, isLoading, error} = useOrderDetail(id)
 
+    const {mutate: updateOrder} = useUpdateOrder()
+
+    const updateStatus = (status: string) =>{
+        updateOrder({id: id, updatedFields: {status}})
+    }
+
     if(isLoading){
         return <Loader/>
       }
-    if(error){
+    if(error || !order){
       return <Text>Failed to fetch</Text>
     }
-
+ console.log(order)
     return(
         <View style={{padding: 10, gap: 20, flex: 1}}>
             <Stack.Screen options={{title: `Order #${id}`}} />
 
 
             <FlatList 
-            data={order.order_items}
+            data={order.order_item}
             renderItem={({item})=> <OrderItemListItem item = {item}/> }
             contentContainerStyle= {{gap: 10}}
             ListHeaderComponent={()=> <OrderListItem order = {order} /> }
@@ -40,7 +46,7 @@ const OrderDetailScreen = ()=>{
                 {OrderStatusList.map((status) => (
                     <Pressable
                         key={status}
-                        onPress={() => console.warn('Update status')}
+                        onPress={() => updateStatus(status)}
                         style={{
                             borderColor: Colors.light.tint,
                             borderWidth: 1,

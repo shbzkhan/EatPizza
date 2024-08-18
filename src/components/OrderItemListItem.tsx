@@ -3,9 +3,10 @@ import React from 'react';
 import Colors from '../constants/Colors';
 import { OrderItem } from '../types';
 import { defaultPizaaImage } from './ProductListItem';
+import { Tables } from '../database.types';
 
 type OrderItemListItemProps = {
-  item: OrderItem;
+  item: {products: Tables<"products">} &  Tables<"order_item">;
 };
 
 const OrderItemListItem = ({ item }: OrderItemListItemProps) => {
