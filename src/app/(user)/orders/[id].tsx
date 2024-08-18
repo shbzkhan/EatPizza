@@ -4,6 +4,7 @@ import { Stack, useLocalSearchParams } from "expo-router"
 import { View, Text, FlatList } from "react-native"
 import { useOrderDetail } from "@/src/api/orders"
 import Loader from "@/src/components/Loader"
+import { useUpdateOrderSubscription } from "@/src/api/orders/subscription"
 
 
 const OrderDetailScreen = ()=>{
@@ -11,6 +12,8 @@ const OrderDetailScreen = ()=>{
     const id = parseFloat(typeof idString === "string"? idString : idString[0] )
 
     const {data: order, isLoading, error} = useOrderDetail(id)
+
+    useUpdateOrderSubscription(id)
 
     if(isLoading){
         return <Loader/>
