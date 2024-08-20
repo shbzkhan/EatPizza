@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
 import React from 'react';
 import Colors from '../constants/Colors';
-import { OrderItem } from '../types';
+
 import { defaultPizaaImage } from './ProductListItem';
 import { Tables } from '../database.types';
+import RemoteImage from './RemoteImage';
 
 type OrderItemListItemProps = {
   item: {products: Tables<"products">} &  Tables<"order_item">;
@@ -12,11 +13,12 @@ type OrderItemListItemProps = {
 const OrderItemListItem = ({ item }: OrderItemListItemProps) => {
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: item.products.image || defaultPizaaImage }}
-        style={styles.image}
-        resizeMode="contain"
-      />
+         <RemoteImage
+          path={item.products.image}
+          fallback={defaultPizaaImage}
+          style={styles.image}
+          resizeMode="contain"
+        />
       <View style={{ flex: 1 }}>
         <Text style={styles.title}>{item.products.name}</Text>
         <View style={styles.subtitleContainer}>

@@ -68,8 +68,8 @@ const CreatePorductScreen = () => {
 
   const onCreateProduct = async () => {
     if (!validationInput()) {
-      setloading(false)
-      return;
+      return setloading(false)
+      
 
     }
 
@@ -88,13 +88,14 @@ const CreatePorductScreen = () => {
     );
   };
 
-  const onUpdateProduct = () => {
+  const onUpdateProduct = async () => {
     if (!validationInput()) {
-      setloading(false)
-      return;
+      return setloading(false)
+      
     }
+    const imagePath = await uploadImage();
     updateProduct(
-      { id, name, image, price: parseFloat(price) },
+      { id, name, image: imagePath, price: parseFloat(price) },
       {
         onSuccess: () => {
           resetFiled(), router.back(), setloading(false);
