@@ -8,6 +8,7 @@ import Colors from "@/src/constants/Colors";
 import { useProduct } from "@/src/api/products";
 import { defaultPizaaImage } from "@/src/components/ProductListItem";
 import Loader from "@/src/components/Loader";
+import RemoteImage from "@/src/components/RemoteImage";
 
 
 const sizes: PizzaSize[] = ["S", "M", "L", "XL"];
@@ -65,8 +66,9 @@ const {data:product, error, isLoading} = useProduct(id)
     />
 
       <Stack.Screen options={{ title: product?.name }} />
-      <Image
-        source={{ uri: product?.image || defaultPizaaImage }}
+      <RemoteImage
+        path={product?.image}
+        fallback={defaultPizaaImage}
         style={styles.image}
         resizeMode="contain"
       />

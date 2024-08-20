@@ -1,12 +1,29 @@
-import { StyleSheet, Text, TextInput, View, Image, Alert, ActivityIndicator } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Image,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import Colors from "../../../constants/Colors";
 import Button from "../../../components/button";
 import { defaultPizaaImage } from "../../../components/ProductListItem";
 import * as ImagePicker from "expo-image-picker";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { useDeleteProduct, useInsertProduct, useProduct, useUpdateProduct } from "@/src/api/products";
+import {
+  useDeleteProduct,
+  useInsertProduct,
+  useProduct,
+  useUpdateProduct,
+} from "@/src/api/products";
 import Loader from "@/src/components/Loader";
+import * as FileSystem from "expo-file-system";
+import { randomUUID } from "expo-crypto";
+import { supabase } from "@/src/lib/supabase";
+import { decode } from "base64-arraybuffer";
 
 const CreatePorductScreen = () => {
   const [name, setName] = useState("");
@@ -15,35 +32,33 @@ const CreatePorductScreen = () => {
   const [image, setImage] = useState<string | null>(null);
 
   const { id: idString } = useLocalSearchParams();
-  const id = parseFloat(typeof idString ===   "string" ? idString : idString?.[0])
+  const id = parseFloat(
+    typeof idString === "string" ? idString : idString?.[0]
+  );
   const isUpdating = !!id;
-  const router = useRouter()
+  const router = useRouter();
 
-  const {mutate: insetProduct} = useInsertProduct()
-  const {mutate: updateProduct} = useUpdateProduct()
-  const {mutate: deleteProduct} = useDeleteProduct()
-  const {data: updatingProduct} = useProduct(id)
-  const [loading, setloading] = useState(false)
+  const { mutate: insetProduct } = useInsertProduct();
+  const { mutate: updateProduct } = useUpdateProduct();
+  const { mutate: deleteProduct } = useDeleteProduct();
+  const { data: updatingProduct } = useProduct(id);
+  const [loading, setloading] = useState(false);
 
-  useEffect(()=>{
-    if(updatingProduct){
+  useEffect(() => {
+    if (updatingProduct) {
       setName(updatingProduct.name),
-      setImage(updatingProduct.image),
-      setPrice(updatingProduct.price.toString())
-
+        setImage(updatingProduct.image),
+        setPrice(updatingProduct.price.toString());
     }
-
-  },[updatingProduct])
-
+  }, [updatingProduct]);
 
   const onSubmit = () => {
-    setloading(true)
+    setloading(true); 
     if (isUpdating) {
       onUpdateProduct();
     } else {
       onCreateProduct();
     }
-
   };
 
   const resetFiled = () => {
@@ -51,34 +66,41 @@ const CreatePorductScreen = () => {
     setPrice("");
   };
 
-  const onCreateProduct = () => {
+  const onCreateProduct = async () => {
     if (!validationInput()) {
+      setloading(false)
       return;
+
     }
+
+    const imagePath = await uploadImage();
+
     // console.warn(`Name: ${name}, Price: ${price}`)
-    insetProduct({name, image, price: parseFloat(price)},{
-      onSuccess: ()=>{
-        resetFiled();
-        router.back()
-        setloading(false)
+    insetProduct(
+      { name, image: imagePath, price: parseFloat(price) },
+      {
+        onSuccess: () => {
+          resetFiled();
+          router.back();
+          setloading(false);
+        },
       }
-    })
-  
+    );
   };
 
   const onUpdateProduct = () => {
     if (!validationInput()) {
+      setloading(false)
       return;
     }
-    updateProduct({id, name, image, price: parseFloat(price)},{
-     
-      onSuccess: ()=>{
-        resetFiled(),
-        router.back(),
-      setloading(false)
+    updateProduct(
+      { id, name, image, price: parseFloat(price) },
+      {
+        onSuccess: () => {
+          resetFiled(), router.back(), setloading(false);
+        },
       }
-      
-    })
+    );
     // console.warn(name)
   };
 
@@ -116,12 +138,12 @@ const CreatePorductScreen = () => {
   };
 
   const onDelete = () => {
-    deleteProduct(id,{
-      onSuccess: ()=>{
+    deleteProduct(id, {
+      onSuccess: () => {
         resetFiled();
-        router.replace("/(admin)")
-      }
-    })
+        router.replace("/(admin)");
+      },
+    });
   };
 
   const onConfirmDelete = () => {
@@ -137,7 +159,24 @@ const CreatePorductScreen = () => {
     ]);
   };
 
-  
+  const uploadImage = async () => {
+    if (!image?.startsWith("file://")) {
+      return;
+    }
+
+    const base64 = await FileSystem.readAsStringAsync(image, {
+      encoding: "base64",
+    });
+    const filePath = `${randomUUID()}.png`;
+    const contentType = "image/png";
+    const { data, error } = await supabase.storage
+      .from("product-images")
+      .upload(filePath, decode(base64), { contentType });
+
+    if (data) {
+      return data.path;
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -172,7 +211,15 @@ const CreatePorductScreen = () => {
       <Text style={{ color: "red" }}>{error}</Text>
       <Button
         onPress={onSubmit}
-        text={loading?<ActivityIndicator color={"white"}/>:(isUpdating ? "Update Product" : "Create Product")}
+        text={
+          loading ? (
+            <ActivityIndicator color={"white"} />
+          ) : isUpdating ? (
+            "Update Product"
+          ) : (
+            "Create Product"
+          )
+        }
       />
 
       {isUpdating && (
