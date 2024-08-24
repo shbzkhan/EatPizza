@@ -6,6 +6,8 @@ import CartListItem from "../components/CartListItem";
 import Button from "../components/button";
 import { Stack } from "expo-router";
 
+
+
 const CartScreen = () => {
   const { items, total, checkout } = useCart();
   return (
@@ -24,4 +26,3 @@ const CartScreen = () => {
 
 export default CartScreen;
 
-const styles = StyleSheet.create({});
