@@ -31,7 +31,15 @@
       "expo-secure-store"
     ],
     "experiments": {
-      "typedRoutes": true,
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1f22736b-6363-4833-a672-e47a33bea6ce"
+      }
     }
   }
 }
