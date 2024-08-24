@@ -13,13 +13,13 @@ const OrderDetailScreen = ()=>{
 
     const {data: order, isLoading, error} = useOrderDetail(id)
 
-    useUpdateOrderSubscription(id)
+     useUpdateOrderSubscription(id)
 
     if(isLoading){
         return <Loader/>
       }
     if(error || !order){
-      return <Text>Failed to fetch</Text>
+      return <Text>Please refresh your page</Text>
     }
 
     return(

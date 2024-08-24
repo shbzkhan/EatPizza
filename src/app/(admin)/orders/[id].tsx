@@ -19,6 +19,9 @@ const OrderDetailScreen = ()=>{
 
     const updateStatus = (status: string) =>{
         updateOrder({id: id, updatedFields: {status}})
+
+        console.log("Notify:", order?.user_id);
+        
     }
 
     if(isLoading){
