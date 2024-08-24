@@ -12,6 +12,8 @@ import "react-native-reanimated";
 import AuthProvider from "../providers/AuthProvider";
 import { useColorScheme } from "../components/useColorScheme";
 import QueryProvider from "../providers/QueryPorvider";
+import CartProvider from "../providers/CartProvider";
+import NotificationProvider from "../providers/NotificationProvider";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -51,7 +53,7 @@ export default function RootLayout() {
 
   return <RootLayoutNav />;
 }
-import CartProvider from "../providers/CartProvider";
+
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
@@ -60,6 +62,7 @@ function RootLayoutNav() {
   
       <AuthProvider>
         <QueryProvider>
+          <NotificationProvider>
       <CartProvider>
         <Stack>
           <Stack.Screen name="(admin)" options={{ headerShown: false }} />
@@ -70,6 +73,7 @@ function RootLayoutNav() {
           <Stack.Screen name="cart" options={{ presentation: "modal" }} />
         </Stack>
       </CartProvider>
+      </NotificationProvider>
       </QueryProvider>
       </AuthProvider>
     </ThemeProvider>
