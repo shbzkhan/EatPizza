@@ -86,9 +86,9 @@ const clearCheck = ()=>{
           orderItem
           
        ,{
-          onSuccess: (data)=>{
+          onSuccess: ()=>{
             clearCheck(),
-            router.push(`/(user)/orders/${data.id}`)
+            router.push(`/(user)/orders/${order.id}`)
 
           }
         })
