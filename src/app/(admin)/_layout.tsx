@@ -23,7 +23,10 @@ export default function TabLayout() {
   if (!isAdmin) {
     return <Redirect href={"/"} />
   }
-  
+  const {session} = useAuth()
+  if(!session){
+    return <Redirect href={"/"} />
+  }
 
   return (
     <Tabs
@@ -52,6 +55,13 @@ export default function TabLayout() {
           title: 'Orders',
           headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
     </Tabs>

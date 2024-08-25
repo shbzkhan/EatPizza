@@ -29,7 +29,7 @@ const SignInScreen = () => {
       <TextInput
         value={email}
         onChangeText={setEmail}
-        placeholder="jon@gmail.com"
+        placeholder="user@eatpizza.com"
         style={styles.input}
         keyboardType="email-address"
       />
@@ -38,7 +38,7 @@ const SignInScreen = () => {
       <TextInput
         value={password}
         onChangeText={setPassword}
-        placeholder=""
+        placeholder="********"
         style={styles.input}
         secureTextEntry
       />
