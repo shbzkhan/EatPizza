@@ -1,9 +1,6 @@
 
 import React from 'react'
-import { Stack, Link } from 'expo-router'
-import { Pressable } from 'react-native'
-import { FontAwesome } from '@expo/vector-icons'
-import Colors from '@/src/constants/Colors'
+import { Stack } from 'expo-router'
 
 
 export default function MenuStack(){

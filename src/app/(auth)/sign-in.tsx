@@ -4,8 +4,6 @@ import Button from "../../components/button";
 import Colors from "../../constants/Colors";
 import { Link, Stack } from "expo-router";
 import { supabase } from "@/src/lib/supabase";
-import { isLoaded } from "expo-font";
-import Loader from "@/src/components/Loader";
 const SignInScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +21,8 @@ const SignInScreen = () => {
   };
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: "Sign in" }} />
+      <Stack.Screen options={{ headerShown: false}} />
+      <Text style={styles.header} >Eatpizza</Text>
 
       <Text style={styles.label}>Email</Text>
       <TextInput
@@ -48,9 +47,11 @@ const SignInScreen = () => {
         disabled={loading}
         text={loading ? <ActivityIndicator color={"white"}/> : "Sign in"}
       />
-      <Link href="/sign-up" style={styles.textButton}>
-        Create an account
-      </Link>
+      <Text style={styles.textButton}> Don't have an account?. 
+            <Link href="/sign-up" style={{color: Colors.light.tint,}} >
+             Sign up
+            </Link>
+      </Text>
     </View>
   );
 };
@@ -76,8 +77,16 @@ const styles = StyleSheet.create({
   textButton: {
     alignSelf: "center",
     fontWeight: "bold",
-    color: Colors.light.tint,
     marginVertical: 10,
+    color: "gray"
+  },
+  header:{
+    fontSize: 40,
+    fontStyle: "italic",
+     paddingBottom: 45,
+      textAlign:"center",
+      color: Colors.light.tint,
+      fontWeight: "bold"
   },
 });
 

@@ -1,9 +1,10 @@
-import { View, Text, TextInput, StyleSheet, Alert, ActivityIndicator } from "react-native";
+import { View, Text, TextInput, StyleSheet, Alert, ActivityIndicator, Image } from "react-native";
 import React, { useState } from "react";
 import Button from "../../components/button";
 import Colors from "../../constants/Colors";
 import { Link, Stack } from "expo-router";
 import { supabase } from "@/src/lib/supabase";
+
 
 const SignUpScreen = () => {
   const [email, setEmail] = useState("");
@@ -20,7 +21,8 @@ const SignUpScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: "Sign up" }} />
+      <Stack.Screen options={{ headerShown: false}} />
+      <Text style={styles.header} >Create a new account</Text>
       <Text style={styles.label}>Email</Text>
       <TextInput
         value={email}
@@ -44,9 +46,11 @@ const SignUpScreen = () => {
         disabled={loading}
         text ={loading ? <ActivityIndicator color={"white"}/>  : "Create account"}
       />
-      <Link href="/sign-in" style={styles.textButton}>
-        Sign in
-      </Link>
+      <Text style={styles.textButton}> Don't have an account?. 
+            <Link href="/sign-in" style={{color: Colors.light.tint,}} >
+             Log in
+            </Link>
+      </Text>
     </View>
   );
 };
@@ -60,6 +64,17 @@ const styles = StyleSheet.create({
   label: {
     color: "gray",
   },
+  header:{
+    fontSize: 30,
+     paddingBottom: 40,
+      marginHorizontal: "auto",
+      color: "gray"
+
+  },
+  image:{
+    width:20,
+    aspectRatio: 1
+  },
   input: {
     borderWidth: 1,
     borderColor: "gray",
@@ -72,7 +87,7 @@ const styles = StyleSheet.create({
   textButton: {
     alignSelf: "center",
     fontWeight: "bold",
-    color: Colors.light.tint,
+    color: "gray",
     marginVertical: 10,
   },
 });

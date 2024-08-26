@@ -1,4 +1,4 @@
-import { StyleSheet, Text, FlatList, ActivityIndicator} from 'react-native'
+import {Text, FlatList} from 'react-native'
 import React from 'react'
 import OrderListItem from '@/src/components/OrderLIstItem'
 import { useMyOrderList } from '@/src/api/orders'
@@ -26,5 +26,3 @@ if(error){
 }
 
 export default OrderScreen
-
-const styles = StyleSheet.create({})
